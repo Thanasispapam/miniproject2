@@ -1,0 +1,20 @@
+<launch>
+  <include file="$(find video_stream_opencv)/launch/camera.launch" >
+    <arg name="camera_name" value="data_provider" />
+<!-- 
+    <arg name="video_stream_provider" value="0" />
+    <arg name="visualize" value="true" />
+-->
+    <arg name="fps" value="10" />
+    <arg name="video_stream_provider" value="$(find video_stabilizer_node)/data/test.mp4" /> 
+  </include>
+  <node name="image_view" pkg="rqt_image_view" type="rqt_image_view" args="image:=/data_provider/image_raw" />
+  <node name="stabilizer" pkg="video_stabilizer_node" type="stabilizer.py"
+  output="screen">
+    <remap from="image_raw" to="/data_provider/image_raw" />
+  </node>
+  <node name="rqt_graph" pkg="rqt_graph" type="rqt_graph" />
+  <node name="image_view_analyzed_image" pkg="rqt_image_view" type="rqt_image_view" args="image:=/analyzed_image" />
+<!-- 
+-->
+</launch>
